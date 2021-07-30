@@ -70,7 +70,7 @@ function encodeConstructorArgs(inputs) {
  * @param {string} bytecode - full call args bytecode
  * @returns {Object} decodedArgs - Object representing decoded args with name, type, and data fields
  */
-function decodeFunctionArgs(contractABI, bytecode) {
+ function decodeFunctionArgs(contractABI, bytecode) {
   const argsBuffer = new Buffer(bytecode, 'hex');
   const methodID = argsBuffer.slice(0, 4);
   const argsData = argsBuffer.slice(4);
@@ -91,9 +91,10 @@ function decodeFunctionArgs(contractABI, bytecode) {
   let decoded = abi.rawDecode(inputTypes, argsData);
   let decodedArgs = _.map(decoded, function(e, i) {
     const data = formatSingle(inputTypes[i], e);
-    return { 'name': inputNames[i], 'type': inputTypes[i], 'data': data };
+    return { 'name': inputNames[i], 'type': inputTypes[i], 'data': data,  };
   });
-  return decodedArgs;
+
+  return [{functionName: func.name}, ...decodedArgs];
 }
 
 module.exports = {
